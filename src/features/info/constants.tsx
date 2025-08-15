@@ -446,7 +446,7 @@ export const socialData = [
     ),
     link: "mailto:sayyedtahanabavi@gmail.com",
     name: "Gmail",
-    id: "tahanabaviwork@gmail.com",
+    id: "sayyedtahanabavi@gmail.com",
     color: "#EA4335",
   },
 ];
