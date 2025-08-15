@@ -102,7 +102,7 @@ export const InfoPage: React.FC = () => {
               text={t("desc", { years: yearsExp })}
             />
           </div>
-          <div className="w-full flex gap-16 mt-10 justify-center lg:justify-start lg:rtl:justify-end">
+          <div className="w-full flex gap-5 sm:gap-16 mt-10 justify-center lg:justify-start lg:rtl:justify-end">
             <Magnet padding={20}>
               <ShimmerButton
                 borderRadius="20px"
@@ -131,7 +131,7 @@ export const InfoPage: React.FC = () => {
               </Link>
             </Magnet>
           </div>
-          <div className="grid grid-cols-3 mt-10">
+          <div className="grid grid-cols-2 md:grid-cols-3 mt-10">
             {socialData.map((e) => (
               <SocialBtn data={e} key={`social-btns-${e.name}`} />
             ))}

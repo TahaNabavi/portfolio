@@ -3,8 +3,7 @@
 import { Tooltip } from "@/components/ui";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { useNavigation } from "@/hooks";
 import { PATHS } from "@/routes/paths";
 import {
@@ -47,6 +46,7 @@ function Btn({
 export default function Navbar() {
   const t = useTranslations("layouts.navbar");
   const navigate = useNavigation();
+  const locale = useLocale();
 
   const langChangeHandler = () => {
     const lang =
@@ -109,9 +109,7 @@ export default function Navbar() {
             img={
               <Image
                 src={`/locales/${
-                  (Cookie.get("LOCALE") as
-                    | (typeof TRANSLATION.langs)[number]
-                    | undefined) || TRANSLATION.default
+                  locale as (typeof TRANSLATION.langs)[number]
                 }.png`}
                 alt=""
                 width="24"

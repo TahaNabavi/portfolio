@@ -10,7 +10,7 @@ export const MainBox: React.FC<PropsWithChildren> = ({ children }) => {
     <div
       className={clsx(
         "absolute flex items-center justify-center backdrop-blur-md border-4 border-white/5 p-3 overflow-y-auto transition-all",
-        expanded ? "w-full h-full" : "w-full h-full md:w-[90%] md:h-[90%] rounded-3xl"
+        expanded ? "w-full h-full" : "w-full h-full md:w-[90%] md:h-[90%] md:rounded-3xl"
       )}
     >
       {children}

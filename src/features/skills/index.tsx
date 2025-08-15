@@ -78,7 +78,7 @@ export const SkillsPage: React.FC = () => {
 
       <div
         ref={mainRef}
-        className="flex items-center mt-80 sm:mt-64 lg:left-[60%] xl:left-[55%] md:left-[65%] md:mt-5 justify-center bg-black backdrop-blur-3xl p-3 border-2 border-primary-1/80 z-10 rounded-full aspect-square overflow-hidden w-40 absolute top-0"
+        className="flex items-center mt-64 lg:left-[60%] xl:left-[55%] md:left-[65%] md:mt-5 justify-center bg-black backdrop-blur-3xl p-3 border-2 border-primary-1/80 z-10 rounded-full aspect-square overflow-hidden w-40 absolute top-0"
       >
         <Image
           src="/person.png"
