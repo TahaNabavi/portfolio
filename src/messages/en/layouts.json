@@ -1,0 +1,11 @@
+{
+  "layouts": {
+    "navbar": {
+        "language":"Language",
+        "projects":"Projects",
+        "skills":"Skills",
+        "info":"Info",
+        "feedback":"Feedback"
+    }
+  }
+}

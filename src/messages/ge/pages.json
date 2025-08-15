@@ -1,0 +1,32 @@
+{
+  "pages": {
+    "info": {
+      "title": "Wer bin ich?",
+      "desc": "Kreativer Full-Stack-Webentwickler mit {years}+ Jahren Erfahrung in eleganter Frontend- und leistungsstarkem Backend-Entwicklung. Ich verwandle Ideen in schnelle, funktionale und benutzerfreundliche Lösungen – eine Kombination aus Problemlösung, Design-Auge und analytischem Denken.",
+      "btn": {
+        "skill": "Meine Fähigkeiten",
+        "hire": "Mich einstellen"
+      },
+      "fun": {
+        "text1": "Versprochen, ich hacke dich nicht… noch nicht.",
+        "text2": "Völlig normaler Mensch, kein Alien.",
+        "text3": "Das ist definitiv kein Geheimversteck.",
+        "text4": "Ignoriere die verdächtig große Anzahl an Katzen."
+      }
+    },
+    "skills": {
+      "title": "Meine Herangehensweise",
+      "desc": "Während meiner Lernreise habe ich nicht nur gelernt, wie man etwas baut – ich habe verstanden, wie alles funktioniert, warum es funktioniert, und diese Denkweise ist das, was wirklich zählt."
+    },
+    "projects": {
+      "title": "Meine Projekte",
+      "btn": {
+        "try": "Jetzt testen",
+        "github": "GitHub"
+      }
+    },
+    "feedback": {
+      "title": "Feedback"
+    }
+  }
+}

@@ -1,0 +1,9 @@
+export { default as ArmIcon } from './ArmIcon';
+export { default as ArrowLeftIcon } from './ArrowLeftIcon';
+export { default as ArrowRightIcon } from './ArrowRightIcon';
+export { default as BoxIcon } from './BoxIcon';
+export { default as GithubIcon } from './GithubIcon';
+export { default as HomeIcon } from './HomeIcon';
+export { default as LinkIcon } from './LinkIcon';
+export { default as MessageIcon } from './MessageIcon';
+export { default as MugIcon } from './MugIcon';

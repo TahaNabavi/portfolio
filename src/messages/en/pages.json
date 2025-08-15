@@ -1,0 +1,32 @@
+{
+  "pages": {
+    "info": {
+      "title": "Who Am I ?",
+      "desc": "Creative full-stack web developer with {years}+ years of experience crafting front-end elegance and back-end power. I turn ideas into fast, functional, and user-friendly solutions — blending problem-solving with a designer’s eye and a thinker’s mind.",
+      "btn": {
+        "skill": "My Skills",
+        "hire": "Hire Me"
+      },
+      "fun": {
+        "text1": "Promise I’m not hacking you… yet.",
+        "text2": "Totally normal human, not an alien.",
+        "text3": "This is definitely not a secret lair.",
+        "text4": "Ignore the suspiciously large number of cats."
+      }
+    },
+    "skills": {
+      "title":"My Approach",
+      "desc": "During my learning journey, I didn’t just learn how to build something — I learned how everything works, why it works, and that mindset is what truly matters."
+    },
+    "projects":{
+      "title":"My Projects",
+      "btn":{
+        "try":"Try now",
+        "github":"Github"
+      }
+    },
+    "feedback":{
+      "title":"Feedback"
+    }
+  }
+}
