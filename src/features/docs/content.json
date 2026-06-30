@@ -1,0 +1,852 @@
+{
+  "en": {
+    "packages": [
+      {
+        "slug": "typefetch",
+        "name": "@tahanabavi/typefetch",
+        "summary": "A strongly typed TypeScript HTTP client powered by Zod contracts, middleware, retries, mock data, response wrappers, field encryption, contract testing, CLI workflows, and report generation.",
+        "latestVersion": "1.6.4",
+        "install": "npm install @tahanabavi/typefetch zod",
+        "github": "https://github.com/tahanabavi/typefetch",
+        "npm": "https://www.npmjs.com/package/@tahanabavi/typefetch",
+        "sections": [
+          {
+            "slug": "overview",
+            "title": "Overview",
+            "description": "The package turns Zod endpoint contracts into a runtime-safe and type-safe API client.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "TypeFetch is built around one idea: define every API endpoint once as a Zod contract, then let the client generate typed module methods, validate request input, validate successful responses, run middleware, and power contract-driven tests from the same source of truth."
+              },
+              {
+                "type": "list",
+                "items": [
+                  "Typed modules are generated from the contract object after client.init().",
+                  "Requests are validated before fetch is called.",
+                  "Responses are validated before data reaches application code.",
+                  "Structured input supports path, query, body, and headers.",
+                  "The same endpoint metadata powers mock mode, encryption, CLI tests, and reports."
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const user = await api.user.getUser({\n  path: { id: \"123\" },\n});\n\nconsole.log(user.name);"
+              }
+            ]
+          },
+          {
+            "slug": "installation",
+            "title": "Installation",
+            "description": "Install TypeFetch and Zod. Zod is a peer dependency.",
+            "blocks": [
+              { "type": "code", "language": "bash", "code": "npm install @tahanabavi/typefetch zod" },
+              { "type": "code", "language": "bash", "code": "yarn add @tahanabavi/typefetch zod" },
+              { "type": "code", "language": "bash", "code": "pnpm add @tahanabavi/typefetch zod" },
+              {
+                "type": "table",
+                "headers": ["Requirement", "Value"],
+                "rows": [
+                  ["Node.js", ">=18"],
+                  ["Peer dependency", "zod ^4.0.0"],
+                  ["Published package", "@tahanabavi/typefetch"],
+                  ["Middleware export", "@tahanabavi/typefetch/middlewares"],
+                  ["CLI binary", "typefetch"]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "exports",
+            "title": "Exports",
+            "description": "The public API is exported from the root package, with a dedicated middleware subpath.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Export", "Purpose"],
+                "rows": [
+                  ["ApiClient", "Main client class that builds typed modules from contracts."],
+                  ["RichError", "Normalized error class used for HTTP, validation, wrapper, token, and network failures."],
+                  ["makeRequestSchema", "Helper for creating typed structured request schemas."],
+                  ["loggingMiddleware", "Logs outgoing requests and incoming responses."],
+                  ["retryMiddleware", "Middleware-level retry wrapper."],
+                  ["authMiddleware", "Injects an Authorization bearer token from a refresh function."],
+                  ["cacheMiddleware", "Caches successful GET responses in memory."],
+                  ["encryptionMiddleware", "Encrypts selected request fields and decrypts selected response fields."],
+                  ["runApiTests / tester types", "Contract-driven API test runner and report types."],
+                  ["defineTypeFetchTestConfig", "Helper for CLI test configuration files."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "import { ApiClient, RichError, makeRequestSchema } from \"@tahanabavi/typefetch\";\nimport { cacheMiddleware, encryptionMiddleware } from \"@tahanabavi/typefetch/middlewares\";"
+              }
+            ]
+          },
+          {
+            "slug": "quick-start",
+            "title": "Quick Start",
+            "description": "Create contracts, create the client, initialize modules, then call generated methods.",
+            "blocks": [
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "import { z } from \"zod\";\nimport { ApiClient } from \"@tahanabavi/typefetch\";\n\nconst contracts = {\n  user: {\n    getUser: {\n      method: \"GET\",\n      path: \"/users/:id\",\n      auth: true,\n      request: z.object({\n        path: z.object({ id: z.string() }),\n      }),\n      response: z.object({\n        id: z.string(),\n        name: z.string(),\n      }),\n    },\n  },\n} as const;\n\nconst client = new ApiClient(\n  {\n    baseUrl: \"https://api.example.com\",\n    tokenProvider: async () => \"token\",\n  },\n  contracts,\n);\n\nclient.init();\nexport const api = client.modules;"
+              },
+              {
+                "type": "callout",
+                "title": "Important",
+                "text": "Always call client.init() before reading client.modules. init() creates the module and endpoint methods from your contract object."
+              }
+            ]
+          },
+          {
+            "slug": "contract-shape",
+            "title": "Contract Shape",
+            "description": "A contract is a module map. Each module contains endpoint definitions.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Endpoint key", "Required", "Description"],
+                "rows": [
+                  ["method", "Yes", "HTTP method: GET, POST, PUT, PATCH, DELETE."],
+                  ["path", "Yes", "Endpoint path. Params use colon syntax like /users/:id."],
+                  ["request", "Yes", "Zod schema for the endpoint input."],
+                  ["response", "Yes", "Zod schema for the successful response payload."],
+                  ["auth", "No", "When true, the client requires a token and sends Authorization: Bearer <token>."],
+                  ["mockData", "No", "Static response data or a function returning response data for mock mode."],
+                  ["headers", "No", "Static headers or a function derived from parsed input."],
+                  ["bodyType", "No", "json by default, or form-data for multipart payloads."],
+                  ["encryption", "No", "Field-level request/response encryption config."],
+                  ["test", "No", "Contract-driven test metadata for the test runner and CLI."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const contracts = {\n  user: {\n    createUser: {\n      method: \"POST\",\n      path: \"/users\",\n      request: z.object({\n        body: z.object({\n          name: z.string(),\n          email: z.string().email(),\n        }),\n      }),\n      response: z.object({\n        id: z.string(),\n        name: z.string(),\n        email: z.string(),\n      }),\n    },\n  },\n} as const;"
+              }
+            ]
+          },
+          {
+            "slug": "structured-requests",
+            "title": "Structured Requests",
+            "description": "Structured input separates URL params, query params, JSON/form body, and per-call headers.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Part", "Behavior"],
+                "rows": [
+                  ["path", "Replaces :param placeholders in endpoint.path. Missing values throw MISSING_PATH_PARAM."],
+                  ["query", "Appends URLSearchParams. Arrays repeat the key. Dates become ISO strings. Objects become JSON strings."],
+                  ["body", "Sent as JSON for non-GET requests unless bodyType is form-data."],
+                  ["headers/header", "Merged into request headers after endpoint headers."],
+                  ["isStructured", "Input is treated as structured only when its keys are limited to path, query, body, headers, or header."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "await api.user.updateUser({\n  path: { id: \"123\" },\n  query: { notify: true, tags: [\"admin\", \"active\"] },\n  headers: { \"X-Tenant\": \"main\" },\n  body: { name: \"Taha\" },\n});\n\n// PATCH /users/123?notify=true&tags=admin&tags=active"
+              }
+            ]
+          },
+          {
+            "slug": "request-schema-helper",
+            "title": "Request Schema Helper",
+            "description": "makeRequestSchema provides a typed helper for structured request schemas.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "The helper creates a Zod object with optional path and query objects, a typed body, and optional record headers. If no body is provided, body becomes optional undefined."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const updateUserRequest = makeRequestSchema<\n  { id: z.ZodString },\n  { notify: z.ZodOptional<z.ZodBoolean> },\n  z.ZodObject<{ name: z.ZodString }>\n>()({\n  path: z.object({ id: z.string() }),\n  query: z.object({ notify: z.boolean().optional() }),\n  body: z.object({ name: z.string() }),\n});"
+              }
+            ]
+          },
+          {
+            "slug": "flat-requests",
+            "title": "Flat Request Compatibility",
+            "description": "Non-structured schemas still work for older APIs or simple endpoints.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "If input does not look like a structured request, TypeFetch treats the full parsed input as the payload. For non-GET methods it is JSON stringified as the body. For GET methods it is validated but not sent as a body."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const contracts = {\n  user: {\n    createUser: {\n      method: \"POST\",\n      path: \"/users\",\n      request: z.object({ name: z.string() }),\n      response: z.object({ id: z.string(), name: z.string() }),\n    },\n  },\n} as const;\n\nawait api.user.createUser({ name: \"Taha\" });"
+              }
+            ]
+          },
+          {
+            "slug": "client-api",
+            "title": "ApiClient API",
+            "description": "The client exposes runtime controls for modules, middleware, errors, transforms, retries, tokens, mocks, and wrappers.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Method/property", "Behavior"],
+                "rows": [
+                  ["init()", "Builds client.modules from the contract tree."],
+                  ["modules", "Typed generated endpoint methods grouped by module."],
+                  ["use(middleware, options?)", "Registers middleware in pipeline order."],
+                  ["onError(handler)", "Receives normalized errors before they are thrown."],
+                  ["useResponseTransform(fn)", "Transforms parsed successful response data before returning it."],
+                  ["setRetryConfig(config)", "Enables built-in retry around the whole request execution."],
+                  ["setTokenProvider(provider)", "Sets or replaces the dynamic token provider."],
+                  ["setMockMode(enabled, delay?)", "Toggles mock mode and optional mock latency."],
+                  ["setResponseWrapper(wrapper)", "Defines a wrapper schema used to validate and unwrap API envelopes."],
+                  ["getCurrentToken()", "Returns tokenProvider result first, otherwise config.token."]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "client-config",
+            "title": "Client Configuration",
+            "description": "Constructor config defines base URL, auth token source, and mock defaults.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Option", "Type", "Default"],
+                "rows": [
+                  ["baseUrl", "string", "Required"],
+                  ["token", "string", "undefined"],
+                  ["tokenProvider", "() => string | Promise<string>", "undefined"],
+                  ["useMockData", "boolean", "false"],
+                  ["mockDelay", "{ min: number; max: number }", "{ min: 100, max: 1000 }"]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const client = new ApiClient(\n  {\n    baseUrl: \"https://api.example.com\",\n    token: \"static-token\",\n    tokenProvider: async () => \"dynamic-token\",\n    useMockData: false,\n    mockDelay: { min: 200, max: 1000 },\n  },\n  contracts,\n);"
+              }
+            ]
+          },
+          {
+            "slug": "auth",
+            "title": "Authentication",
+            "description": "Endpoint auth and auth middleware are separate tools with different jobs.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "When endpoint.auth is true, ApiClient requires a token from tokenProvider or config.token. If no token exists, it throws RichError with status 401 and code NO_TOKEN before fetch runs."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const client = new ApiClient(\n  {\n    baseUrl: \"https://api.example.com\",\n    tokenProvider: async () => localStorage.getItem(\"token\") ?? \"\",\n  },\n  contracts,\n);\n\nclient.setTokenProvider(async () => \"new-token\");"
+              },
+              {
+                "type": "p",
+                "text": "authMiddleware can also inject Authorization from a refreshToken function. If refreshToken fails, the middleware logs a warning and lets the request continue."
+              }
+            ]
+          },
+          {
+            "slug": "headers",
+            "title": "Headers",
+            "description": "Headers can come from defaults, endpoint config, structured request input, auth, and middleware.",
+            "blocks": [
+              {
+                "type": "list",
+                "items": [
+                  "Content-Type: application/json is added unless bodyType is form-data.",
+                  "Endpoint headers can be a fixed record or a function of parsed input.",
+                  "Structured input headers are normalized and merged after endpoint headers.",
+                  "auth: true adds Authorization after token resolution.",
+                  "Middleware can still mutate ctx.init.headers before fetch."
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "headers: (input) => ({\n  \"X-Tenant\": input.headers?.[\"X-Tenant\"] ?? \"default\",\n})"
+              }
+            ]
+          },
+          {
+            "slug": "body-serialization",
+            "title": "Body Serialization",
+            "description": "TypeFetch serializes JSON and form-data bodies based on endpoint.bodyType.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Case", "Behavior"],
+                "rows": [
+                  ["GET", "No request body is sent."],
+                  ["JSON default", "parts.body or flat input is JSON.stringify'd."],
+                  ["FormData instance", "Used directly when bodyType is form-data."],
+                  ["Plain object form body", "Converted into FormData entries."],
+                  ["Array values", "Appended as repeated FormData entries."],
+                  ["Date values", "Converted to ISO strings."],
+                  ["Nested objects", "JSON.stringify'd before appending."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "uploadAvatar: {\n  method: \"POST\",\n  path: \"/users/:id/avatar\",\n  bodyType: \"form-data\",\n  request: z.object({\n    path: z.object({ id: z.string() }),\n    body: z.object({ file: z.instanceof(File), alt: z.string().optional() }),\n  }),\n  response: z.object({ uploaded: z.boolean() }),\n}"
+              }
+            ]
+          },
+          {
+            "slug": "middleware-pipeline",
+            "title": "Middleware Pipeline",
+            "description": "Middlewares wrap fetch in registration order, then unwind in reverse order.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "The client builds the runner with reduceRight. If you register firstMiddleware then secondMiddleware, the request enters first, then second, then fetch; responses unwind through second then first."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.use(firstMiddleware);\nclient.use(secondMiddleware);\n\n// first before -> second before -> fetch -> second after -> first after"
+              },
+              {
+                "type": "table",
+                "headers": ["ctx field", "Value"],
+                "rows": [
+                  ["url", "Final URL after path and query handling."],
+                  ["init", "Mutable RequestInit with method, headers, body, and signal."],
+                  ["endpoint", "The endpoint definition, including metadata such as encryption/test."],
+                  ["request", "Structured request parts plus rawInput."]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "built-in-retry",
+            "title": "Built-in Retry Engine",
+            "description": "ApiClient has a retry engine independent of retryMiddleware.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Option", "Behavior"],
+                "rows": [
+                  ["maxRetries", "Number of retry attempts after the first failure."],
+                  ["backoff", "fixed, linear, or exponential."],
+                  ["retryCondition", "Optional function receiving RichError and attempt."],
+                  ["default condition", "Retries errors with status >= 500."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.setRetryConfig({\n  maxRetries: 3,\n  backoff: \"exponential\",\n  retryCondition: (error, attempt) => {\n    return error.status !== undefined && error.status >= 500;\n  },\n});"
+              }
+            ]
+          },
+          {
+            "slug": "timeout-abort",
+            "title": "Timeout and Abort",
+            "description": "Each generated endpoint method accepts optional request options.",
+            "blocks": [
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "await api.user.getUser(\n  { path: { id: \"123\" } },\n  { timeout: 5000 },\n);\n\nconst controller = new AbortController();\nawait api.user.getUser(\n  { path: { id: \"123\" } },\n  { signal: controller.signal },\n);\ncontroller.abort();"
+              },
+              {
+                "type": "p",
+                "text": "When timeout is provided, the client creates an AbortController and clears its timer after success or failure. If both signal and timeout exist, the passed signal takes priority in ctx.init.signal."
+              }
+            ]
+          },
+          {
+            "slug": "mock-mode",
+            "title": "Mock Mode",
+            "description": "Mock mode returns endpoint mockData without performing network requests.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "Mock data can be static or a function. It is delayed using the configured mockDelay range, parsed with the endpoint response schema, then passed through responseTransform."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const contracts = {\n  user: {\n    getUser: {\n      method: \"GET\",\n      path: \"/users/:id\",\n      request: z.object({ path: z.object({ id: z.string() }) }),\n      response: z.object({ id: z.string(), name: z.string() }),\n      mockData: () => ({ id: crypto.randomUUID(), name: \"Mock User\" }),\n    },\n  },\n} as const;\n\nclient.setMockMode(true, { min: 200, max: 1000 });"
+              }
+            ]
+          },
+          {
+            "slug": "response-wrapper",
+            "title": "Response Wrappers",
+            "description": "Validate API envelopes and return only the successful data payload.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "setResponseWrapper receives the endpoint success schema and returns a Zod schema for the whole API envelope. If the parsed wrapper has success: false, TypeFetch throws RichError. If success is true, it validates and returns parsedWrapped.data."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.setResponseWrapper((successResponse) =>\n  z.union([\n    z.object({ success: z.literal(true), data: successResponse }),\n    z.object({ success: z.literal(false), message: z.string(), code: z.number().optional() }),\n  ]),\n);"
+              }
+            ]
+          },
+          {
+            "slug": "errors",
+            "title": "Errors",
+            "description": "Errors are normalized into RichError whenever possible.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Error", "Code/status"],
+                "rows": [
+                  ["Missing token for auth endpoint", "status 401, code NO_TOKEN"],
+                  ["Missing path parameter", "code MISSING_PATH_PARAM"],
+                  ["Zod request/response failure", "code VALIDATION_ERROR"],
+                  ["HTTP non-ok response", "status, code, title, detail, errors from JSON response"],
+                  ["Wrapped API failure", "API_ERROR or API_ERROR_<code>"],
+                  ["Network/unknown error", "message from thrown error or Unknown error"]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.onError((error) => {\n  console.error(error.status, error.code, error.message);\n});\n\ntry {\n  await api.user.getUser({ path: { id: \"missing\" } });\n} catch (error) {\n  if (error instanceof RichError) {\n    console.error(error.detail, error.errors);\n  }\n}"
+              }
+            ]
+          },
+          {
+            "slug": "logging-middleware",
+            "title": "Logging Middleware",
+            "description": "loggingMiddleware logs request and response information when debug is enabled.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Option", "Default"],
+                "rows": [
+                  ["debug", "true"],
+                  ["logRequest", "true"],
+                  ["logResponse", "true"]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.use(loggingMiddleware, {\n  debug: true,\n  logRequest: true,\n  logResponse: true,\n});"
+              }
+            ]
+          },
+          {
+            "slug": "cache-middleware",
+            "title": "Cache Middleware",
+            "description": "cacheMiddleware stores successful GET JSON responses in memory by method and URL.",
+            "blocks": [
+              {
+                "type": "list",
+                "items": [
+                  "Only GET requests are cached.",
+                  "Cache key is METHOD:URL.",
+                  "Default TTL is 60000ms.",
+                  "Cached hits return a synthetic Response with JSON content.",
+                  "Each middleware instance owns its own in-memory cache."
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.use(cacheMiddleware({ ttl: 120_000 }));"
+              }
+            ]
+          },
+          {
+            "slug": "retry-middleware",
+            "title": "Retry Middleware",
+            "description": "retryMiddleware retries middleware/fetch failures with exponential delay based on a fixed base delay.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Option", "Default"],
+                "rows": [
+                  ["maxRetries", "3"],
+                  ["delay", "500ms"],
+                  ["wait formula", "delay * 2 ** attempt"]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.use(retryMiddleware({\n  maxRetries: 3,\n  delay: 300,\n}));"
+              }
+            ]
+          },
+          {
+            "slug": "encryption-middleware",
+            "title": "Encryption Middleware",
+            "description": "Encrypt selected request body fields and decrypt selected response fields.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Feature", "Details"],
+                "rows": [
+                  ["Methods", "AES, DES, RSA, Base64, Custom"],
+                  ["Key material", "symmetric key or rsa public/private pair"],
+                  ["Request handling", "Parses JSON body, applies request map, then writes encrypted JSON back to ctx.init.body."],
+                  ["Response handling", "Clones JSON response, applies response map, and returns a new Response."],
+                  ["failClosed", "Defaults to true. Throws instead of leaking plaintext on failure."],
+                  ["Deep maps", "Supports nested objects and arrays."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "client.use(encryptionMiddleware, {\n  keyProvider: async () => ({ type: \"symmetric\", key: \"secret\" }),\n  failClosed: true,\n});\n\nconst contracts = {\n  secure: {\n    createSecret: {\n      method: \"POST\",\n      path: \"/secure\",\n      request: z.object({ body: z.object({ secret: z.string() }) }),\n      response: z.object({ id: z.string(), token: z.string() }),\n      encryption: {\n        method: \"AES\",\n        request: { secret: true },\n        response: { token: true },\n      },\n    },\n  },\n} as const;"
+              }
+            ]
+          },
+          {
+            "slug": "encryption-maps",
+            "title": "Encryption Maps",
+            "description": "Maps describe which fields should be transformed and which method should be used.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Map value", "Meaning"],
+                "rows": [
+                  ["true", "Transform with the default method."],
+                  ["false", "Skip this field."],
+                  ["AES/DES/RSA/Base64/Custom", "Transform this field using an explicit method."],
+                  ["object", "Recurse into nested fields."],
+                  ["array", "Apply item map by index or reuse first item map."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "encryption: {\n  method: {\n    request: \"RSA\",\n    response: \"AES\",\n  },\n  request: {\n    password: true,\n    profile: { pin: \"Base64\" },\n    users: [{ ssn: true }],\n  },\n  response: {\n    token: true,\n  },\n}"
+              }
+            ]
+          },
+          {
+            "slug": "testing-metadata",
+            "title": "Endpoint Test Metadata",
+            "description": "Endpoint test config lets contracts define how API tests should run.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Field", "Purpose"],
+                "rows": [
+                  ["enabled", "Disable all tests for the endpoint when false."],
+                  ["tags", "Filter endpoints/cases with includeTags and excludeTags."],
+                  ["destructive", "Marks unsafe endpoints such as DELETE/reset/payment."],
+                  ["input", "Default static input or async factory using shared context."],
+                  ["cases", "Named per-endpoint test cases."],
+                  ["setup / teardown", "Lifecycle hooks that can read/write shared context."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "getUserById: {\n  method: \"GET\",\n  path: \"/users/:id\",\n  request: z.object({ path: z.object({ id: z.string() }) }),\n  response: z.object({ id: z.string(), name: z.string() }),\n  test: {\n    tags: [\"user\", \"smoke\"],\n    input: { path: { id: \"user-1\" } },\n    expect: ({ response }) => {\n      if (!response.name) throw new Error(\"Expected user name\");\n    },\n  },\n}"
+              }
+            ]
+          },
+          {
+            "slug": "test-runner",
+            "title": "Test Runner",
+            "description": "The runner supports schema, mock, live, and full modes.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Mode", "Behavior"],
+                "rows": [
+                  ["schema", "Validates generated or configured input against request schema without network calls."],
+                  ["mock", "Validates endpoint mockData against response schema."],
+                  ["live", "Calls client.modules endpoint methods using generated/configured input."],
+                  ["full", "Runs schema, mock, and live phases when applicable."]
+                ]
+              },
+              {
+                "type": "table",
+                "headers": ["Runner option", "Purpose"],
+                "rows": [
+                  ["timeout", "Default request timeout for live calls."],
+                  ["concurrency", "Concurrency setting for runner execution."],
+                  ["stopOnFail", "Stops after first failed result."],
+                  ["includeDestructive", "Allows endpoints marked destructive."],
+                  ["includeTags / excludeTags", "Filters endpoints and cases."],
+                  ["autoInput", "Controls generated input values from Zod schemas."],
+                  ["requestOptions", "Extra RequestOptions for live calls."]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "auto-input",
+            "title": "Auto Input Generation",
+            "description": "The tester can generate valid inputs from Zod schemas.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Option", "Behavior"],
+                "rows": [
+                  ["maxDepth", "Maximum recursive generation depth."],
+                  ["includeOptional", "Whether optional object fields should be generated. Default true."],
+                  ["includeArrayItems", "Whether arrays receive one generated item. Default true."],
+                  ["values", "Override by full dot path, field name, or request part path."],
+                  ["fileFactory", "Fallback value for file-like schemas."]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "cli",
+            "title": "CLI",
+            "description": "The typefetch binary runs init, list, test, release-doc, help, and version commands.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Command", "Purpose"],
+                "rows": [
+                  ["typefetch init", "Creates a starter TypeFetch config."],
+                  ["typefetch list", "Lists discovered contract endpoints."],
+                  ["typefetch test", "Runs contract-driven API tests."],
+                  ["typefetch release-doc", "Generates versioned release documentation."],
+                  ["typefetch help", "Prints help."],
+                  ["typefetch version", "Prints package version."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "bash",
+                "code": "typefetch init\ntypefetch list\ntypefetch test --mode full --format markdown,json,html --output ./typefetch-report/report"
+              }
+            ]
+          },
+          {
+            "slug": "cli-flags",
+            "title": "CLI Flags",
+            "description": "The parser supports long flags, aliases, boolean flags, repeated flags, and --no-* negation.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Flag", "Alias", "Purpose"],
+                "rows": [
+                  ["--config", "-c", "Path to config file."],
+                  ["--mode", "-m", "schema, mock, live, or full."],
+                  ["--output", "-o", "Report output path."],
+                  ["--format", "-f", "Report format. Repeated values become an array."],
+                  ["--help", "-h", "Show help."],
+                  ["--version", "-v", "Show version."],
+                  ["--include-destructive", "", "Include destructive endpoint tests."],
+                  ["--stop-on-fail", "", "Stop after first failure."],
+                  ["--force", "", "Overwrite generated files for init/release-doc."],
+                  ["--no-<flag>", "", "Sets a boolean flag to false."]
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "cli-config",
+            "title": "CLI Config",
+            "description": "A config file can provide contracts, client creation, runner options, context, and report defaults.",
+            "blocks": [
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "import { defineTypeFetchTestConfig } from \"@tahanabavi/typefetch\";\nimport { contracts } from \"./src/contracts\";\nimport { ApiClient } from \"@tahanabavi/typefetch\";\n\nexport default defineTypeFetchTestConfig({\n  contracts,\n  createClient: ({ baseUrl, token }) => {\n    const client = new ApiClient(\n      { baseUrl: baseUrl ?? \"http://localhost:3000\", token },\n      contracts,\n    );\n    client.init();\n    return client;\n  },\n  options: { mode: \"full\", timeout: 5000 },\n  report: { output: \"./typefetch-report/report\", formats: [\"markdown\", \"json\"] },\n});"
+              }
+            ]
+          },
+          {
+            "slug": "reports",
+            "title": "Reports",
+            "description": "API tests can produce JSON, Markdown, and HTML reports.",
+            "blocks": [
+              {
+                "type": "table",
+                "headers": ["Report field", "Description"],
+                "rows": [
+                  ["generatedAt", "ISO timestamp for report generation."],
+                  ["mode", "schema, mock, live, or full."],
+                  ["summary", "total, passed, failed, skipped, durationMs."],
+                  ["results", "Per-case result with module, endpoint, phase, status, input, response, or error."]
+                ]
+              },
+              {
+                "type": "code",
+                "language": "bash",
+                "code": "typefetch test --mode full --format markdown,json,html --output ./typefetch-report/report"
+              }
+            ]
+          },
+          {
+            "slug": "typing",
+            "title": "Type Inference",
+            "description": "Endpoint method input and output types are inferred from Zod schemas.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "EndpointMethods maps each endpoint to a function that accepts z.infer<request> and returns Promise<z.infer<response>>. That means editor autocomplete follows your schemas for both request input and response output."
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const user = await api.user.getUser({\n  path: { id: \"123\" },\n});\n\n// user is inferred as:\n// { id: string; name: string }"
+              }
+            ]
+          },
+          {
+            "slug": "testing-with-fetch",
+            "title": "Unit Testing Clients",
+            "description": "Because TypeFetch uses fetch, tests can mock fetch and still exercise validation and parsing.",
+            "blocks": [
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "global.fetch = vi.fn();\n\n(fetch as any).mockResolvedValueOnce({\n  ok: true,\n  json: async () => ({ id: \"1\", name: \"Taha\" }),\n});\n\nconst user = await api.user.getUser({\n  path: { id: \"1\" },\n});\n\nexpect(user.name).toBe(\"Taha\");"
+              },
+              {
+                "type": "list",
+                "items": [
+                  "Request validation",
+                  "Response validation",
+                  "Path parameter handling",
+                  "Query string generation",
+                  "JSON and FormData serialization",
+                  "Header merging",
+                  "Auth token injection",
+                  "Middleware execution order",
+                  "Retries, timeout, and abort behavior",
+                  "Mock mode, wrappers, errors, and encryption"
+                ]
+              }
+            ]
+          },
+          {
+            "slug": "best-practices",
+            "title": "Best Practices",
+            "description": "Recommended usage patterns for reliable TypeFetch projects.",
+            "blocks": [
+              {
+                "type": "list",
+                "items": [
+                  "Prefer structured request schemas for new endpoints.",
+                  "Keep contracts in a shared module and export a single initialized api object.",
+                  "Use endpoint test metadata for critical flows and CLI smoke checks.",
+                  "Mark destructive endpoints so they do not run by default.",
+                  "Use response wrappers when your backend returns API envelopes.",
+                  "Keep encryption failClosed true outside debugging sessions.",
+                  "Avoid caching sensitive GET responses with cacheMiddleware.",
+                  "Use createClient in CLI config when baseUrl/token should come from CLI flags."
+                ]
+              }
+            ]
+          }
+        ],
+        "versions": [
+          {
+            "version": "1.6.0",
+            "title": "Contract Testing Runner and CLI",
+            "sections": [
+              {
+                "slug": "v1-6-0-overview",
+                "title": "v1.6.0 Overview",
+                "description": "Version 1.6.0 introduced the contract-driven testing layer and CLI workflows.",
+                "blocks": [
+                  {
+                    "type": "list",
+                    "items": [
+                      "Endpoint discovery from contracts.",
+                      "Generated and custom request input.",
+                      "Schema, mock, live, and full test modes.",
+                      "Shared test context for multi-step flows.",
+                      "Markdown, HTML, and JSON reports.",
+                      "Versioned release documentation under docs/releases."
+                    ]
+                  }
+                ]
+              },
+              {
+                "slug": "v1-6-0-migration",
+                "title": "Migration Notes",
+                "description": "Existing clients continue to work while projects can opt into testing metadata.",
+                "blocks": [
+                  {
+                    "type": "p",
+                    "text": "The main client API remains compatible with existing contract usage. New fields such as endpoint.test and CLI config are additive, so teams can introduce contract tests gradually."
+                  },
+                  {
+                    "type": "code",
+                    "language": "ts",
+                    "code": "test: {\n  tags: [\"smoke\"],\n  input: { path: { id: \"user-1\" } },\n}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "ge": {
+    "packages": [
+      {
+        "slug": "typefetch",
+        "name": "@tahanabavi/typefetch",
+        "summary": "Ein stark typisierter TypeScript HTTP Client auf Basis von Zod Contracts, Middleware, Retries, Mock-Daten, Response Wrappern, Field Encryption, Contract Testing, CLI Workflows und Reports.",
+        "latestVersion": "1.6.4",
+        "install": "npm install @tahanabavi/typefetch zod",
+        "github": "https://github.com/tahanabavi/typefetch",
+        "npm": "https://www.npmjs.com/package/@tahanabavi/typefetch",
+        "sections": [
+          {
+            "slug": "overview",
+            "title": "Overview",
+            "description": "TypeFetch verwandelt Zod Endpoint Contracts in einen runtime-sicheren und typisierten API Client.",
+            "blocks": [
+              {
+                "type": "p",
+                "text": "Die Dokumentation ist jetzt komplett JSON-basiert und kann pro Sprache separat gepflegt werden. Die englische Version enthält die vollständige technische Referenz; diese deutsche Struktur ist bereit für vollständige Übersetzung."
+              },
+              {
+                "type": "list",
+                "items": [
+                  "Contracts erzeugen typisierte Module.",
+                  "Requests und Responses werden mit Zod validiert.",
+                  "Middleware, Mock Mode, Encryption, CLI und Tests nutzen dieselbe Endpoint-Metadatenstruktur."
+                ]
+              },
+              {
+                "type": "code",
+                "language": "ts",
+                "code": "const user = await api.user.getUser({\n  path: { id: \"123\" },\n});"
+              }
+            ]
+          }
+        ],
+        "versions": [
+          {
+            "version": "1.6.0",
+            "title": "Contract Testing Runner und CLI",
+            "sections": [
+              {
+                "slug": "v1-6-0-overview",
+                "title": "v1.6.0 Overview",
+                "description": "Version 1.6.0 führte Contract Testing und CLI Workflows ein.",
+                "blocks": [
+                  {
+                    "type": "p",
+                    "text": "Diese Version kann aus Contracts Endpoints erkennen, Inputs erzeugen und Reports in mehreren Formaten exportieren."
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -2,10 +2,54 @@
   "pages": {
     "info": {
       "title": "Wer bin ich?",
+      "eyebrow": "Full-stack Entwickler",
+      "hero": "Ich baue animierte, typsichere Webprodukte mit praktischem Full-stack Blick.",
       "desc": "Kreativer Full-Stack-Webentwickler mit {years}+ Jahren Erfahrung in eleganter Frontend- und leistungsstarkem Backend-Entwicklung. Ich verwandle Ideen in schnelle, funktionale und benutzerfreundliche Lösungen – eine Kombination aus Problemlösung, Design-Auge und analytischem Denken.",
       "btn": {
         "skill": "Meine Fähigkeiten",
+        "projects": "Projekte",
         "hire": "Mich einstellen"
+      },
+      "build": {
+        "eyebrow": "Was ich baue",
+        "packages": {
+          "title": "Developer Tools",
+          "body": "Typed Packages, CLIs, API Clients und Docs, die Entwickler schneller machen."
+        },
+        "dashboards": {
+          "title": "Dashboards",
+          "body": "Praktische Interfaces fuer Security, Realtime Status, Commerce und Workflows."
+        },
+        "motion": {
+          "title": "Animated Frontends",
+          "body": "Interfaces mit Bewegung und Charakter, aber weiterhin lesbar und nutzbar."
+        }
+      },
+      "style": {
+        "eyebrow": "Arbeitsstil",
+        "systems": {
+          "title": "Systeme zuerst",
+          "body": "Ich verstehe gern, wie Teile zusammenpassen, bevor ich die Oberflaeche poliere."
+        },
+        "typeSafety": {
+          "title": "Typed und getestet",
+          "body": "Contracts, Runtime-Verhalten und kleine Details sind mir wichtig."
+        },
+        "experience": {
+          "title": "Experience zaehlt",
+          "body": "Ein UI darf lebendig sein, muss aber scanbar, vertrauenswuerdig und nutzbar bleiben."
+        }
+      },
+      "social": {
+        "eyebrow": "Kontakt"
+      },
+      "snapshot": {
+        "eyebrow": "Snapshot",
+        "focus": "Fokus",
+        "focusValue": "Webprodukte",
+        "stack": "Main stack",
+        "mode": "Mode",
+        "modeValue": "Builder"
       },
       "fun": {
         "text1": "Versprochen, ich hacke dich nicht… noch nicht.",
@@ -15,11 +59,62 @@
       }
     },
     "skills": {
-      "title": "Meine Herangehensweise",
-      "desc": "Während meiner Lernreise habe ich nicht nur gelernt, wie man etwas baut – ich habe verstanden, wie alles funktioniert, warum es funktioniert, und diese Denkweise ist das, was wirklich zählt."
+      "title": "Mein Ansatz",
+      "desc": "Ich lerne nicht nur, wie man etwas baut. Ich versuche zu verstehen, warum es funktioniert und wie die Teile zusammenpassen.",
+      "eyebrow": "Skill Graph",
+      "categories": {
+        "lang": "Sprachen",
+        "frameworks": "Frameworks",
+        "database": "DB",
+        "etc": "Tools"
+      },
+      "stats": {
+        "skills": "Skills",
+        "linked": "mit Projekten"
+      },
+      "detail": {
+        "eyebrow": "Skill",
+        "desc": "{skill} wird mit Fokusbereichen und automatisch gefundenen Projekten angezeigt.",
+        "focus": "Fokus",
+        "projects": "Verknuepfte Projekte",
+        "noProjects": "Noch keine passenden Projekt-Tags. Fuege den Skill zu einem Projekt-Tag hinzu."
+      },
+      "matrix": {
+        "eyebrow": "Skill Matrix"
+      }
     },
     "projects": {
       "title": "Meine Projekte",
+      "desc": "Ein kategorisierter Blick auf meine Packages, veröffentlichten Produkte und persönlichen Experimente, mit Dokumentation für alles, was mehr Entwickler-Kontext verdient.",
+      "eyebrow": "Packages / Produkte / Experimente",
+      "featured": {
+        "eyebrow": "Featured Package",
+        "kind": "TypeScript Package",
+        "latest": "latest v{version}"
+      },
+      "sections": {
+        "packages": {
+          "title": "Packages",
+          "eyebrow": "Open-Source Tools",
+          "body": "Open-Source Entwicklerpakete mit npm, GitHub und eigener Dokumentation."
+        },
+        "realProjects": {
+          "title": "Echte Projekte",
+          "eyebrow": "Veröffentlichte Arbeit",
+          "body": "Produktionsnahe Projekte für reale Workflows, Teams, Nutzer oder geschäftliche Anforderungen."
+        },
+        "personalProjects": {
+          "title": "Persönliche Projekte",
+          "eyebrow": "Experimente und Tools",
+          "body": "Persönliche Builds, kreative Interfaces, Portfolio-Versionen und kleine Werkzeuge zum Erkunden von Ideen."
+        }
+      },
+      "links": {
+        "live": "Live",
+        "github": "GitHub",
+        "npm": "npm",
+        "docs": "Docs"
+      },
       "btn": {
         "try": "Jetzt testen",
         "github": "GitHub"

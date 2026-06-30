@@ -2,10 +2,54 @@
   "pages": {
     "info": {
       "title": "Who Am I ?",
+      "eyebrow": "Full-stack developer",
+      "hero": "I build animated, type-safe web products with a practical full-stack mindset.",
       "desc": "Creative full-stack web developer with {years}+ years of experience crafting front-end elegance and back-end power. I turn ideas into fast, functional, and user-friendly solutions — blending problem-solving with a designer’s eye and a thinker’s mind.",
       "btn": {
         "skill": "My Skills",
+        "projects": "Projects",
         "hire": "Hire Me"
+      },
+      "build": {
+        "eyebrow": "What I build",
+        "packages": {
+          "title": "Developer Tools",
+          "body": "Typed packages, CLIs, API clients, and documentation systems that help developers move faster."
+        },
+        "dashboards": {
+          "title": "Product Dashboards",
+          "body": "Useful interfaces for security, realtime status, commerce, and operational workflows."
+        },
+        "motion": {
+          "title": "Animated Frontends",
+          "body": "Interfaces with motion and personality, kept readable, responsive, and usable."
+        }
+      },
+      "style": {
+        "eyebrow": "Working style",
+        "systems": {
+          "title": "Systems First",
+          "body": "I like understanding how the pieces fit before polishing the surface."
+        },
+        "typeSafety": {
+          "title": "Typed And Tested",
+          "body": "I care about contracts, runtime behavior, and the small details that prevent bugs."
+        },
+        "experience": {
+          "title": "Experience Matters",
+          "body": "A UI should feel alive, but it should still be easy to scan, trust, and use."
+        }
+      },
+      "social": {
+        "eyebrow": "Find me"
+      },
+      "snapshot": {
+        "eyebrow": "Snapshot",
+        "focus": "Focus",
+        "focusValue": "Web products",
+        "stack": "Main stack",
+        "mode": "Mode",
+        "modeValue": "Builder"
       },
       "fun": {
         "text1": "Promise I’m not hacking you… yet.",
@@ -16,10 +60,61 @@
     },
     "skills": {
       "title":"My Approach",
-      "desc": "During my learning journey, I didn’t just learn how to build something — I learned how everything works, why it works, and that mindset is what truly matters."
+      "desc": "During my learning journey, I didn’t just learn how to build something — I learned how everything works, why it works, and that mindset is what truly matters.",
+      "eyebrow": "Skill graph",
+      "categories": {
+        "lang": "Languages",
+        "frameworks": "Frameworks",
+        "database": "Databases",
+        "etc": "Tools"
+      },
+      "stats": {
+        "skills": "skills tracked",
+        "linked": "linked to projects"
+      },
+      "detail": {
+        "eyebrow": "Selected skill",
+        "desc": "{skill} is shown with related focus areas and projects found automatically from the project catalog.",
+        "focus": "Focus",
+        "projects": "Auto-linked projects",
+        "noProjects": "No matching project tags yet. Add this skill to a project tag and it will appear here automatically."
+      },
+      "matrix": {
+        "eyebrow": "Skill matrix"
+      }
     },
     "projects":{
       "title":"My Projects",
+      "desc":"A categorized look at my packages, shipped products, and personal experiments, with documentation where the work deserves a deeper developer-facing home.",
+      "eyebrow":"Packages / Products / Experiments",
+      "featured":{
+        "eyebrow":"Featured Package",
+        "kind":"TypeScript package",
+        "latest":"latest v{version}"
+      },
+      "sections":{
+        "packages":{
+          "title":"Packages",
+          "eyebrow":"Open-source tools",
+          "body":"Open-source developer packages with npm, GitHub, and dedicated documentation."
+        },
+        "realProjects":{
+          "title":"Real Projects",
+          "eyebrow":"Shipped work",
+          "body":"Production-minded projects built for real workflows, teams, users, or business needs."
+        },
+        "personalProjects":{
+          "title":"Personal Projects",
+          "eyebrow":"Experiments and tools",
+          "body":"Personal builds, creative interfaces, portfolio versions, and utilities made to explore ideas or solve my own problems."
+        }
+      },
+      "links":{
+        "live":"Live",
+        "github":"GitHub",
+        "npm":"npm",
+        "docs":"Docs"
+      },
       "btn":{
         "try":"Try now",
         "github":"Github"
