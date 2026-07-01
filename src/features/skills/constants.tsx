@@ -1672,6 +1672,18 @@ export const skillsData = {
       skill("Query Optimization", "#2DD4BF", "QO"),
     ],
   },
+  soft: {
+    title: "Soft Skills",
+    color: "#F472B6",
+    skills: [
+      skill("Team Management", "#38BDF8", "TM"),
+      skill("Time Management", "#2DD4BF", "TIME"),
+      skill("Adaptability", "#A3E635", "AD"),
+      skill("Fast Learner", "#FACC15", "FL"),
+      skill("Communication", "#FB7185", "CM"),
+      skill("Problem Solving", "#C084FC", "PS"),
+    ],
+  },
   etc: {
     title: "etc",
     color: "#007074",

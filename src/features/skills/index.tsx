@@ -17,6 +17,65 @@ type SkillItem = (typeof skillsData)[SkillCategoryKey]["skills"][number];
 type SelectedSkill = SkillItem & { categoryKey: SkillCategoryKey };
 
 const categoryKeys = Object.keys(skillsData) as SkillCategoryKey[];
+const defaultCategory: SkillCategoryKey = "frameworks";
+
+const skillPriority = [
+  "TypeScript",
+  "JavaScript",
+  "React",
+  "Next",
+  "Node",
+  "Express",
+  "NestJS",
+  "Laravel",
+  "REST API",
+  "Authentication",
+  "Authorization / RBAC",
+  "WebSocket / Socket.IO",
+  "Socket",
+  "Tailwind",
+  "React Query / TanStack Query",
+  "Zustand",
+  "Framer Motion",
+  "PostgreSQL",
+  "MySQL",
+  "Redis",
+  "Prisma",
+  "Database Design",
+  "Query Optimization",
+  "Docker",
+  "Git",
+  "GitHub",
+  "Zod",
+  "Type-safe APIs",
+  "Playwright",
+  "Dashboard Development",
+  "Realtime Apps",
+  "Developer Tools",
+  "Package Development",
+  "Performance Optimization",
+  "SEO",
+  "Team Management",
+  "Time Management",
+  "Adaptability",
+  "Fast Learner",
+  "Communication",
+  "Problem Solving",
+] as const;
+
+const skillPriorityRank = new Map<string, number>(
+  skillPriority.map((skill, index) => [skill, index]),
+);
+
+function getSortedSkills<T extends { name: string }>(skills: T[]) {
+  return [...skills].sort((a, b) => {
+    const rankA = skillPriorityRank.get(a.name) ?? Number.MAX_SAFE_INTEGER;
+    const rankB = skillPriorityRank.get(b.name) ?? Number.MAX_SAFE_INTEGER;
+
+    if (rankA !== rankB) return rankA - rankB;
+    return a.name.localeCompare(b.name);
+  });
+}
 
 const skillAliases: Record<string, string[]> = {
   CSS: ["CSS", "Tailwind", "Less", "Frontend"],
@@ -52,6 +111,12 @@ const skillFocus: Record<string, string[]> = {
   Socket: ["realtime dashboards", "live status", "event flows"],
   Prisma: ["schema modeling", "typed database access", "ORM workflows"],
   Git: ["version control", "collaboration", "release workflow"],
+  "Team Management": ["planning work", "supporting teammates", "delivery focus"],
+  "Time Management": ["prioritization", "focus blocks", "deadline awareness"],
+  Adaptability: ["changing scope", "new tools", "practical decisions"],
+  "Fast Learner": ["docs-first learning", "quick iteration", "self improvement"],
+  Communication: ["clear updates", "team alignment", "asking better questions"],
+  "Problem Solving": ["debugging", "root cause thinking", "practical tradeoffs"],
 };
 
 const normalize = (value: string) =>
@@ -86,9 +151,11 @@ function getSkillProjects(skillName: string, projects: ProjectItem[]) {
 }
 
 function getInitialSkill(): SelectedSkill {
-  const firstCategory = categoryKeys[0];
+  const firstCategory = defaultCategory;
+  const firstSkill = getSortedSkills(skillsData[firstCategory].skills)[0];
+
   return {
-    ...skillsData[firstCategory].skills[0],
+    ...firstSkill,
     categoryKey: firstCategory,
   };
 }
@@ -251,20 +318,25 @@ export const SkillsPage: React.FC = () => {
   const t = useTranslations("pages.skills");
   const locale = useLocale() as Locale;
   const [activeCategory, setActiveCategory] =
-    useState<SkillCategoryKey>("frameworks");
+    useState<SkillCategoryKey>(defaultCategory);
   const [selectedSkill, setSelectedSkill] =
     useState<SelectedSkill>(getInitialSkill);
 
   const allProjects = useMemo(() => getAllProjects(locale), [locale]);
-  const visibleSkills = skillsData[activeCategory].skills;
+  const visibleSkills = useMemo(
+    () => getSortedSkills(skillsData[activeCategory].skills),
+    [activeCategory],
+  );
   const linkedProjects = useMemo(
     () => getSkillProjects(selectedSkill.name, allProjects),
     [allProjects, selectedSkill.name],
   );
 
   const selectCategory = (key: SkillCategoryKey) => {
+    const firstSkill = getSortedSkills(skillsData[key].skills)[0];
+
     setActiveCategory(key);
-    setSelectedSkill({ ...skillsData[key].skills[0], categoryKey: key });
+    setSelectedSkill({ ...firstSkill, categoryKey: key });
   };
 
   const totalSkills = categoryKeys.reduce(
@@ -378,7 +450,7 @@ export const SkillsPage: React.FC = () => {
                         </span>
                       </div>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {skillsData[key].skills.slice(0, 6).map((skill) => (
+                        {getSortedSkills(skillsData[key].skills).slice(0, 6).map((skill) => (
                           <span
                             key={skill.name}
                             className="rounded-full border border-white/10 px-2 py-1 text-xs text-white/55"
