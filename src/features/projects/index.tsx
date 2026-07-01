@@ -2,6 +2,7 @@
 
 import { CometCard, SplitText } from "@/components/ui";
 import { GithubIcon, LinkIcon } from "@/components/shared/icons";
+import type { Locale } from "@/config/i18n";
 import { useExpand } from "@/hooks/use-expand";
 import { motion } from "framer-motion";
 import Image from "next/image";
@@ -411,7 +412,7 @@ function FeaturedPackage({
 export const ProjectsPage: React.FC = () => {
   useExpand(true);
   const t = useTranslations("pages.projects");
-  const locale = useLocale() as "en" | "ge";
+  const locale = useLocale() as Locale;
   const categories = projectCategories[locale] ?? projectCategories.en;
   const packageCategory = categories.find((category) => category.id === "packages");
   const secondaryPackages = packageCategory?.items.slice(1) ?? [];

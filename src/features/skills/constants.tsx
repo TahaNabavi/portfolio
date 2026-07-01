@@ -1,5 +1,58 @@
 import { motion } from "framer-motion";
-import { ReactNode } from "react";
+
+function getSkillInitials(name: string) {
+  return name
+    .replace(/\/.*/g, "")
+    .split(/[\s.-]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0])
+    .join("")
+    .toUpperCase();
+}
+
+function SkillBadgeIcon({ label }: { label: string }) {
+  return (
+    <motion.svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      initial={{ opacity: 0, scale: 0.9, rotate: -4 }}
+      animate={{ opacity: 1, scale: 1, rotate: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+    >
+      <motion.rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+        stroke="currentColor"
+        strokeWidth="1.8"
+        fill="currentColor"
+        fillOpacity="0.12"
+      />
+      <motion.text
+        x="12"
+        y="15"
+        textAnchor="middle"
+        fontSize="7"
+        fontWeight="800"
+        fill="currentColor"
+      >
+        {label}
+      </motion.text>
+    </motion.svg>
+  );
+}
+
+const skill = (name: string, color: string, label = getSkillInitials(name)) => ({
+  icon: <SkillBadgeIcon label={label} />,
+  name,
+  color,
+});
 
 export const skillsData = {
   lang: {
@@ -572,6 +625,9 @@ export const skillsData = {
         name: "PHP",
         color: "#777BB4",
       },
+      skill("SQL", "#4DB6AC"),
+      skill("Bash / Shell", "#89E051", "SH"),
+      skill("Python", "#3776AB", "PY"),
     ],
   },
   frameworks: {
@@ -1300,6 +1356,21 @@ export const skillsData = {
         name: "Less",
         color: "#1D365D",
       },
+      skill("Zustand", "#E9B872", "ZS"),
+      skill("Framer Motion", "#E10098", "FM"),
+      skill("React Query / TanStack Query", "#FF4154", "RQ"),
+      skill("Mantine", "#339AF0", "MA"),
+      skill("Shadcn UI", "#FFFFFF", "UI"),
+      skill("Responsive Design", "#84F5E5", "RD"),
+      skill("Animation / Motion UI", "#F97316", "AM"),
+      skill("NestJS", "#E0234E", "NS"),
+      skill("REST API", "#61DAFB", "API"),
+      skill("WebSocket / Socket.IO", "#FFFFFF", "WS"),
+      skill("Authentication", "#F59E0B", "AU"),
+      skill("Authorization / RBAC", "#FBBF24", "RB"),
+      skill("File Upload", "#38BDF8", "FU"),
+      skill("Payment Gateway Integration", "#22C55E", "PG"),
+      skill("Cron Jobs / Background Jobs", "#A78BFA", "CJ"),
     ],
   },
   database: {
@@ -1597,6 +1668,8 @@ export const skillsData = {
         name: "Redis",
         color: "#DC382D",
       },
+      skill("Database Design", "#8AB2A6", "DD"),
+      skill("Query Optimization", "#2DD4BF", "QO"),
     ],
   },
   etc: {
@@ -2295,6 +2368,34 @@ export const skillsData = {
         name: "Discord JS",
         color: "#5865F2",
       },
+      skill("GitHub", "#FFFFFF", "GH"),
+      skill("npm", "#CB3837", "npm"),
+      skill("pnpm", "#F69220", "pn"),
+      skill("Docker", "#2496ED", "DK"),
+      skill("Swagger / OpenAPI", "#85EA2D", "OA"),
+      skill("ESLint", "#4B32C3", "ES"),
+      skill("Prettier", "#F7B93E", "PR"),
+      skill("Figma", "#F24E1E", "FG"),
+      skill("Linux Basics", "#FCC624", "LX"),
+      skill("Zod", "#3068B7", "ZD"),
+      skill("Unit Testing", "#A3E635", "UT"),
+      skill("Integration Testing", "#65A30D", "IT"),
+      skill("Playwright", "#45BA4B", "PW"),
+      skill("Jest", "#C21325", "JS"),
+      skill("Type-safe APIs", "#3178C6", "TS"),
+      skill("Error Handling", "#EF4444", "EH"),
+      skill("Form Validation", "#06B6D4", "FV"),
+      skill("Dashboard Development", "#84F5E5", "DB"),
+      skill("Admin Panels", "#A78BFA", "AP"),
+      skill("Realtime Apps", "#22D3EE", "RT"),
+      skill("Developer Tools", "#F97316", "DT"),
+      skill("Package Development", "#CB3837", "PD"),
+      skill("CLI Tools", "#89E051", "CLI"),
+      skill("Documentation", "#60A5FA", "DOC"),
+      skill("SEO", "#34D399", "SEO"),
+      skill("Performance Optimization", "#FACC15", "PO"),
+      skill("Team Collaboration", "#F472B6", "TC"),
+      skill("Task Breakdown", "#C084FC", "TB"),
     ],
   },
 };

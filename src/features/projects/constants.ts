@@ -1,3 +1,5 @@
+import type { Locale } from "@/config/i18n";
+
 export type ProjectLink = {
   live?: string;
   github?: string;
@@ -77,7 +79,7 @@ const packages: ProjectItem[] = [
   },
 ];
 
-export const projectCategories: Record<"en" | "ge", ProjectCategory[]> = {
+export const projectCategories: Record<Locale, ProjectCategory[]> = {
   en: [
     {
       id: "packages",
@@ -492,6 +494,249 @@ export const projectCategories: Record<"en" | "ge", ProjectCategory[]> = {
           title: "Portfolio Experiment",
           slug: "portfolio-experiment",
           body: "Eine moderne Portfolio-Iteration mit Next.js und animierter Projektpraesentation.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Tailwind",
+            "Vercel",
+            "Next.js",
+            "Portfolio",
+            "Animation",
+          ],
+          status: "lab",
+          links: {
+            live: "https://portfolio-gamma-flax-82.vercel.app/",
+          },
+        },
+      ],
+    },
+  ],
+  fa: [
+    {
+      id: "packages",
+      items: [
+        {
+          ...typefetchPackage,
+          body: "یک HTTP client قدرتمند و type-safe برای TypeScript که با قراردادهای Zod، اعتبارسنجی runtime، middleware، retry، mock mode، جریان‌های CLI و تست API قراردادمحور ساخته شده است.",
+        },
+        {
+          img: placeholderBanner,
+          title: "@tahanabavi/typesocket",
+          slug: "typesocket",
+          body: "یک پکیج typed در مرحله اولیه برای Socket.IO که رویدادهای realtime را با تجربه توسعه‌دهنده تمیزتر در TypeScript شکل می‌دهد.",
+          tags: ["TypeScript", "Node", "Socket", "Realtime", "Package", "WIP"],
+          status: "lab",
+          links: {
+            github: "https://github.com/TahaNabavi/typesocket",
+          },
+        },
+        {
+          img: placeholderBanner,
+          title: "@tahanabavi/typeaction",
+          slug: "typeaction",
+          body: "یک پکیج آزمایشی سبک برای الگوهای typed action و قراردادهای امن‌تر تابعی که هنوز به تکرار و پختگی بیشتری نیاز دارد.",
+          tags: ["TypeScript", "Actions", "Contracts", "Package", "WIP"],
+          status: "lab",
+          links: {
+            github: "https://github.com/TahaNabavi/typeaction",
+          },
+        },
+      ],
+    },
+    {
+      id: "realProjects",
+      items: [
+        {
+          img: "/etmita-pass.png",
+          title: "ETMITA Passport",
+          slug: "etmita-passport",
+          body: "یک داشبورد محصولی برای پاسپورت دیجیتال محصول که به تیم‌ها کمک می‌کند داده‌های traceability را منتشر کنند، insightهای پایداری را نمایش دهند و هویت محصول را در زنجیره تامین مدیریت کنند.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Mantine",
+            "Dashboard",
+            "Traceability",
+            "Sustainability",
+          ],
+          status: "live",
+          links: {},
+        },
+        {
+          img: "/mitabase.png",
+          title: "MitaBase",
+          slug: "mitabase",
+          body: "داشبورد عملیاتی MitaMed برای تحویل امن نسخه‌های پزشکی، همراه با مدیریت ناوگان، رهگیری لحظه‌ای راننده، پایش سفارش‌ها و جریان‌های کاری dispatch.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Mantine",
+            "Dashboard",
+            "Healthcare",
+            "Realtime",
+            "Fleet",
+          ],
+          status: "live",
+          links: {},
+        },
+      ],
+    },
+    {
+      id: "upcomingProjects",
+      items: [
+        {
+          img: "/whisper.png",
+          title: "Whisper",
+          slug: "whisper",
+          body: "یک اپلیکیشن چت که در حال تبدیل شدن به یک محصول realtime messaging تمیز و کامل است. مخزن‌های عمومی آماده‌اند و نسخه طراحی و محصولی تازه به‌زودی می‌آید.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Node",
+            "Realtime",
+            "Chat",
+            "Soon",
+          ],
+          status: "soon",
+          links: {},
+        },
+      ],
+    },
+    {
+      id: "personalProjects",
+      items: [
+        {
+          img: "https://s6.uupload.ir/files/val_jb04.png",
+          title: "Vaultify",
+          slug: "vaultify",
+          body: "یک داشبورد امنیتی شخصی برای نگهداری رمزها، تسک‌ها و یادداشت‌ها با جریان‌های رمزنگاری‌محور و سطحی کاربردی برای استفاده روزمره.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Tailwind",
+            "Security",
+            "Dashboard",
+            "Encryption",
+          ],
+          status: "live",
+          links: {
+            live: "https://vaultify.tahanabavi.ir/",
+            github: "https://github.com/TahaNabavi/vaultify-client",
+          },
+        },
+        {
+          img: "https://camo.githubusercontent.com/a5d6e93b5aa0c13861e0d2de5b9307c4974980d303b779d8f4a24a712cd7aa5c/68747470733a2f2f73382e7575706c6f61642e69722f66696c65732f70315f7539656f2e706e67",
+          title: "IRGAME Shop",
+          slug: "irgame-shop",
+          body: "یک فروشگاه شخصی برای مرور و خرید بازی‌های Steam، گیفت‌کارت و محصولات گیمینگ با جریان خرید متمرکز و مناسب فضای گیم.",
+          tags: [
+            "JavaScript",
+            "React",
+            "Next",
+            "Tailwind",
+            "Commerce",
+            "Gaming",
+            "Frontend",
+          ],
+          status: "live",
+          links: {
+            github: "https://github.com/TahaNabavi/iran-game",
+          },
+        },
+        {
+          img: "/taskodo.png",
+          title: "Taskodo",
+          slug: "taskodo",
+          body: "یک اپ مدیریت تسک شخصی با تمرکز روی برنامه‌ریزی ساده، نظم روزانه تمیز و جریان کاری عملی برای کنترل کارهای کوچک.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Todo",
+            "Productivity",
+            "Personal",
+          ],
+          status: "lab",
+          links: {
+            github: "https://github.com/TahaNabavi/taskodo",
+            live: "https://taskodo.tahanabavi.ir/",
+          },
+        },
+        {
+          img: "https://s8.uupload.ir/files/capture_0tpd.png",
+          title: "Game Server Status",
+          slug: "game-server-status",
+          body: "یک داشبورد realtime برای بررسی دسترس‌پذیری، عملکرد و سلامت گیم‌سرورها.",
+          tags: [
+            "TypeScript",
+            "React",
+            "Next",
+            "Node",
+            "Socket",
+            "Realtime",
+            "Dashboard",
+            "Game Server",
+          ],
+          status: "live",
+          links: {
+            live: "https://dark-game-pearl.vercel.app/",
+            github: "https://github.com/TahaNabavi/rust-server-status-v2",
+          },
+        },
+        {
+          img: "https://s6.uupload.ir/files/capture_ib.png",
+          title: "Custom CMD",
+          slug: "custom-cmd",
+          body: "یک ابزار command-line برای مدیریت aliasهای مسیرهای تودرتو با جریان کاری ساده و قابل فهم.",
+          tags: ["TypeScript", "Node", "CLI", "Routes", "Automation"],
+          status: "lab",
+          links: {
+            live: "https://custom-cmd.tahanabavi.ir",
+            github: "https://github.com/TahaNabavi/custom-cmd",
+          },
+        },
+        {
+          img: "https://s6.uupload.ir/files/capture_pq74.png",
+          title: "Icon Animation Tool",
+          slug: "icon-animation-tool",
+          body: "یک ابزار بصری برای ساخت انیمیشن آیکن‌های SVG و خروجی گرفتن assetهای آماده motion.",
+          tags: ["JavaScript", "React", "Next", "SVG", "Animation", "Tool"],
+          status: "lab",
+          links: {
+            live: "https://ico-animation.tahanabavi.ir/",
+          },
+        },
+        {
+          img: "https://s6.uupload.ir/files/capture_a2yy.png",
+          title: "Resume Website",
+          slug: "resume-website-v1",
+          body: "یک وب‌سایت رزومه واکنش‌گرا برای نمایش سریع و تمیز مهارت‌ها و تجربه‌ها.",
+          tags: [
+            "HTML",
+            "CSS",
+            "JavaScript",
+            "React",
+            "Next",
+            "Tailwind",
+            "Portfolio",
+            "Resume",
+            "Frontend",
+          ],
+          status: "lab",
+          links: {
+            live: "https://resume-v1.tahanabavi.ir/",
+          },
+        },
+        {
+          img: "https://s8.uupload.ir/files/pr1_7rjx.jpg",
+          title: "Portfolio Experiment",
+          slug: "portfolio-experiment",
+          body: "یک نسخه مدرن از پورتفولیو با Next.js و ارائه انیمیشنی پروژه‌ها.",
           tags: [
             "TypeScript",
             "React",

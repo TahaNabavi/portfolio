@@ -1,0 +1,11 @@
+{
+  "layouts": {
+    "navbar": {
+      "language": "زبان",
+      "projects": "پروژه‌ها",
+      "skills": "مهارت‌ها",
+      "info": "درباره",
+      "feedback": "بازخورد"
+    }
+  }
+}

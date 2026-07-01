@@ -9,11 +9,27 @@ import { ArrowLeftIcon, ArrowRightIcon } from "@/components/shared/icons";
 export const AnimatedTestimonials = ({
   testimonials,
   autoplay = false,
+  activeIndex,
+  onActiveChange,
 }: {
   testimonials: Testimonial[];
   autoplay?: boolean;
+  activeIndex?: number;
+  onActiveChange?: (index: number) => void;
 }) => {
-  const [active, setActive] = useState(0);
+  const [internalActive, setInternalActive] = useState(0);
+  const active = activeIndex ?? internalActive;
+
+  const setActive = (updater: number | ((previous: number) => number)) => {
+    const nextActive =
+      typeof updater === "function" ? updater(active) : updater;
+
+    if (activeIndex === undefined) {
+      setInternalActive(nextActive);
+    }
+
+    onActiveChange?.(nextActive);
+  };
 
   const handleNext = () => {
     setActive((prev) => (prev + 1) % testimonials.length);
@@ -32,7 +48,7 @@ export const AnimatedTestimonials = ({
       const interval = setInterval(handleNext, 5000);
       return () => clearInterval(interval);
     }
-  }, [autoplay]);
+  }, [active, autoplay, testimonials.length]);
 
   const randomRotateY = () => {
     return Math.floor(Math.random() * 21) - 10;

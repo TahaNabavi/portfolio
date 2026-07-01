@@ -22,7 +22,7 @@
 }
 * {
   cursor: url("../assets/0.cur"), auto;
-  font-family: var(--f-persian);
+  font-family: inherit;
   &:active {
     cursor: url("../assets/2.cur"), auto;
     * {
@@ -63,7 +63,13 @@
 }
 
 body {
-  font-family: var(--font-inter), Arial, Helvetica, sans-serif;
+  font-family: var(
+    --app-font-family,
+    var(--font-inter-en),
+    Arial,
+    Helvetica,
+    sans-serif
+  );
 }
 
 .pointer {

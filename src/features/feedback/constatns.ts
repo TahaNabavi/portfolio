@@ -1,6 +1,13 @@
 export const feedbackData = [
   {
     quote:
+      "Taha is the bridge between imagination and production. As a Product Design Team Lead, nothing is more rewarding than working with a Senior Frontend Engineer who doesn’t just implement designs, but deeply understands design systems and UX intent. His eye for detail and commitment to pixel-perfect execution makes him an invaluable partner for any design",
+    name: "Mohamad Jahandide",
+    designation: "UI/UX Designer",
+    src: "/Mohamad-profile.png",
+  },
+  {
+    quote:
       "Working with Taha is truly a pleasure! His sense of responsibility and dedication to his work ensures that everything runs smoothly and successfully.",
     name: "Th3scp",
     designation: "Senior Web Developer",

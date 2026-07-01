@@ -1,6 +1,7 @@
 "use client";
 
 import { LinkIcon } from "@/components/shared/icons";
+import type { Locale } from "@/config/i18n";
 import { useExpand } from "@/hooks/use-expand";
 import { projectCategories, ProjectItem } from "@/features/projects/constants";
 import { cn } from "@/utils";
@@ -56,7 +57,7 @@ const skillFocus: Record<string, string[]> = {
 const normalize = (value: string) =>
   value.toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
-function getAllProjects(locale: "en" | "ge") {
+function getAllProjects(locale: Locale) {
   return projectCategories[locale].flatMap((category) => category.items);
 }
 
@@ -248,7 +249,7 @@ function SkillDetail({
 export const SkillsPage: React.FC = () => {
   useExpand(true);
   const t = useTranslations("pages.skills");
-  const locale = useLocale() as "en" | "ge";
+  const locale = useLocale() as Locale;
   const [activeCategory, setActiveCategory] =
     useState<SkillCategoryKey>("frameworks");
   const [selectedSkill, setSelectedSkill] =
@@ -284,7 +285,7 @@ export const SkillsPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
-              className="rounded-xl border border-white/10 bg-black/25 p-5"
+              className="rounded-xl border border-white/10 bg-black/25 p-5 lg:sticky lg:top-0 lg:self-start"
             >
               <div className="flex items-center gap-4">
                 <div className="flex size-20 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-primary-1/70 bg-black">

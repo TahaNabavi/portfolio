@@ -1,11 +1,5 @@
-import localFont from "next/font/local";
-
-export const inter = localFont({
-  src: [
-    {
-      path: "./ttf/ubuntu.ttf",
-    },
-  ],
-  variable: "--font-inter",
-  display: "swap",
-});
+export {
+  interEn as inter,
+  monoEn,
+  persianFa as persian,
+} from "@/assets/fonts/fonts";
