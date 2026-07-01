@@ -41,7 +41,51 @@
         }
       },
       "social": {
-        "eyebrow": "Find me"
+        "eyebrow": "Find me",
+        "more": "More channels"
+      },
+      "experience": {
+        "eyebrow": "Experience",
+        "title": "Built through real projects, better habits, and stronger teams.",
+        "desc": "My path has been shaped by reading documentation, building things that had to work, and learning how good teams think before they ship.",
+        "items": {
+          "foundation": {
+            "kind": "Foundation",
+            "role": "Learning By Building",
+            "place": "Documentation, implementation, and real project pressure",
+            "status": "Core",
+            "body": "I started programming by reading documentation and turning ideas into real implementations, not by losing time in endless videos. That habit taught me to search, test, break things, fix them, and understand why a solution works.",
+            "points": [
+              "Docs-first learning",
+              "Real implementation",
+              "Problem solving"
+            ]
+          },
+          "practice": {
+            "kind": "Practice",
+            "role": "Small Team Projects",
+            "place": "Two-person teams, game-server tools, and production details",
+            "status": "Hands-on",
+            "body": "I worked in small teams on practical projects, from connecting game servers and showing useful server information to smaller but important tasks like payment gateway integration. Those projects made the work feel real: communication, responsibility, and details started to matter more.",
+            "points": [
+              "Team communication",
+              "Server integrations",
+              "Payment flows"
+            ]
+          },
+          "etmita": {
+            "kind": "Growth",
+            "role": "Developer At Etmita",
+            "place": "From contributing developer to leading frontend work",
+            "status": "Team",
+            "body": "Joining the Etmita team pushed me forward in the best way. I came in as a regular developer and grew through real collaboration: thinking more clearly about structure, leading frontend projects, breaking work into tasks, coordinating with backend and UI teammates, and proposing ideas that made our workflow smoother.",
+            "points": [
+              "Frontend leadership",
+              "Backend and UI teamwork",
+              "Workflow ideas"
+            ]
+          }
+        }
       },
       "snapshot": {
         "eyebrow": "Snapshot",
@@ -92,6 +136,11 @@
         "kind":"TypeScript package",
         "latest":"latest v{version}"
       },
+      "morePackages":{
+        "eyebrow":"Package backlog",
+        "title":"Early packages",
+        "body":"Smaller package experiments that are present in the catalog, but intentionally kept quieter until their next API and documentation pass."
+      },
       "sections":{
         "packages":{
           "title":"Packages",
@@ -101,7 +150,12 @@
         "realProjects":{
           "title":"Real Projects",
           "eyebrow":"Shipped work",
-          "body":"Production-minded projects built for real workflows, teams, users, or business needs."
+          "body":"Production-minded dashboards built for real workflows, operational visibility, and business-facing product systems."
+        },
+        "upcomingProjects":{
+          "title":"Coming Soon",
+          "eyebrow":"In progress",
+          "body":"Projects that are being shaped behind the scenes, with public repositories or placeholders ready for the next polished release."
         },
         "personalProjects":{
           "title":"Personal Projects",
@@ -112,6 +166,8 @@
       "links":{
         "live":"Live",
         "github":"GitHub",
+        "frontend":"Frontend",
+        "backend":"Backend",
         "npm":"npm",
         "docs":"Docs"
       },
@@ -121,7 +177,17 @@
       }
     },
     "feedback":{
-      "title":"Feedback"
+      "title":"Feedback",
+      "eyebrow":"What people say",
+      "desc":"A small collection of notes from people I have learned with, built with, and shipped alongside.",
+      "snapshot":{
+        "eyebrow":"Feedback snapshot",
+        "people":"people",
+        "words":"words shared"
+      },
+      "people":{
+        "eyebrow":"People"
+      }
     }
   }
 }

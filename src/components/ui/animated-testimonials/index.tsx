@@ -38,10 +38,10 @@ export const AnimatedTestimonials = ({
     return Math.floor(Math.random() * 21) - 10;
   };
   return (
-    <div className="mx-auto max-w-sm px-4 py-20 font-sans antialiased md:max-w-4xl md:px-8 lg:px-12">
-      <div className="relative grid grid-cols-1 gap-20 md:grid-cols-2">
-        <div>
-          <div className="relative h-80 w-full">
+    <div className="mx-auto w-full px-4 py-8 font-sans antialiased md:px-7 md:py-10">
+      <div className="relative grid grid-cols-1 gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+        <div className="min-w-0">
+          <div className="relative h-[320px] w-full overflow-hidden rounded-xl border border-white/10 bg-black sm:h-[420px]">
             <AnimatePresence>
               {testimonials.map((testimonial, index) => (
                 <motion.div
@@ -80,14 +80,15 @@ export const AnimatedTestimonials = ({
                     width={500}
                     height={500}
                     draggable={false}
-                    className="h-full w-full rounded-3xl object-cover object-center"
+                    className="h-full w-full object-cover object-center saturate-[0.92]"
                   />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/0 via-black/5 to-black/50" />
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
         </div>
-        <div className="flex flex-col justify-between py-4">
+        <div className="flex min-w-0 flex-col justify-between py-2">
           <motion.div
             key={active}
             initial={{
@@ -107,13 +108,16 @@ export const AnimatedTestimonials = ({
               ease: "easeInOut",
             }}
           >
-            <h3 className="text-2xl font-bold text-black dark:text-white">
+            <div className="font-mono text-xs uppercase tracking-[0.22em] text-primary-1">
+              Testimonial
+            </div>
+            <h3 className="mt-3 break-words text-3xl font-bold text-white md:text-5xl">
               {testimonials[active].name}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-neutral-500">
+            <p className="mt-2 break-words text-sm text-white/45">
               {testimonials[active].designation}
             </p>
-            <motion.p className="mt-4 text-lg text-gray-500 dark:text-neutral-300 bg-neutral-900 p-2 rounded-md border-2 border-white/5">
+            <motion.p className="mt-6 rounded-xl border border-white/10 bg-black/25 p-5 text-base leading-8 text-white/72 md:text-lg">
               {testimonials[active].quote.split(" ").map((word, index) => (
                 <motion.span
                   key={index}
@@ -139,19 +143,24 @@ export const AnimatedTestimonials = ({
               ))}
             </motion.p>
           </motion.div>
-          <div className="flex gap-4 pt-12 md:pt-6">
+          <div className="flex items-center gap-3 pt-8">
             <button
               onClick={handlePrev}
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              aria-label="Previous testimonial"
+              className="pointer group/button flex size-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] transition hover:border-primary-1/40 hover:bg-white/[0.06]"
             >
-              <ArrowLeftIcon className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:rotate-12 group-hover/button:text-primary-1 pointer dark:text-neutral-400" />
+              <ArrowLeftIcon className="size-5 text-white/70 transition-transform duration-300 group-hover/button:rotate-12 group-hover/button:text-primary-1" />
             </button>
             <button
               onClick={handleNext}
-              className="group/button flex h-7 w-7 items-center justify-center rounded-full bg-gray-100 dark:bg-neutral-800"
+              aria-label="Next testimonial"
+              className="pointer group/button flex size-10 items-center justify-center rounded-lg border border-primary-1/25 bg-primary-1/10 transition hover:bg-primary-1/15"
             >
-              <ArrowRightIcon className="h-5 w-5 text-black transition-transform duration-300 group-hover/button:-rotate-12 group-hover/button:text-primary-1 pointer dark:text-neutral-400" />
+              <ArrowRightIcon className="size-5 text-primary-1 transition-transform duration-300 group-hover/button:-rotate-12" />
             </button>
+            <div className="ms-auto font-mono text-xs text-white/35">
+              {active + 1}/{testimonials.length}
+            </div>
           </div>
         </div>
       </div>

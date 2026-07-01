@@ -6,6 +6,7 @@ import { TransitionProvider } from "@/providers";
 import React from "react";
 import { MainBox } from "./main-box";
 import Navbar from "@/components/layouts/navbar";
+import { personJsonLd, websiteJsonLd } from "@/lib/seo";
 
 export const RootLayout: React.FC<
   Readonly<{
@@ -21,6 +22,12 @@ export const RootLayout: React.FC<
             src="//unpkg.com/react-scan/dist/auto.global.js"
           />
         )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify([personJsonLd, websiteJsonLd]),
+          }}
+        />
       </head>
       <body className={`${inter.variable} antialiased text-white`}>
         <NextIntlClientProvider>

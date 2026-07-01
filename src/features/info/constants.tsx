@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 
 export const funText = ["fun.text1", "fun.text2", "fun.text3", "fun.text4"];
 export const yearsExp = 5;
+export const experienceKeys = ["foundation", "practice", "etmita"] as const;
 export const socialData = [
   {
     icon: (
@@ -450,4 +451,4 @@ export const socialData = [
     color: "#EA4335",
   },
 ];
-export const email = "mailto:sayyedtahanabavi@gmail.com"
+export const email = "mailto:sayyedtahanabavi@gmail.com";

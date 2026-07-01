@@ -41,7 +41,51 @@
         }
       },
       "social": {
-        "eyebrow": "Kontakt"
+        "eyebrow": "Kontakt",
+        "more": "Weitere Kanaele"
+      },
+      "experience": {
+        "eyebrow": "Erfahrung",
+        "title": "Gewachsen durch echte Projekte, bessere Gewohnheiten und staerkere Teams.",
+        "desc": "Mein Weg wurde durch Dokumentation, echte Umsetzung und Teams geformt, die erst sauber denken und dann liefern.",
+        "items": {
+          "foundation": {
+            "kind": "Foundation",
+            "role": "Lernen durch Bauen",
+            "place": "Dokumentation, Umsetzung und echter Projektdruck",
+            "status": "Core",
+            "body": "Ich habe Programmieren vor allem durch Dokumentation und echte Umsetzung gelernt, nicht durch endloses Video-Schauen. Dadurch habe ich gelernt zu suchen, zu testen, Dinge kaputtzumachen, sie zu reparieren und wirklich zu verstehen, warum eine Loesung funktioniert.",
+            "points": [
+              "Docs-first Lernen",
+              "Echte Umsetzung",
+              "Problemloesung"
+            ]
+          },
+          "practice": {
+            "kind": "Praxis",
+            "role": "Projekte in kleinen Teams",
+            "place": "Zweier-Teams, Game-Server Tools und produktnahe Details",
+            "status": "Hands-on",
+            "body": "Ich habe in kleinen Teams an praktischen Projekten gearbeitet, von der Verbindung zwischen Game-Servern und dem Anzeigen nuetzlicher Serverdaten bis zu kleineren, aber wichtigen Aufgaben wie Payment-Gateway-Integration. Diese Arbeit hat Verantwortung, Kommunikation und Details sehr real gemacht.",
+            "points": [
+              "Team-Kommunikation",
+              "Server-Integrationen",
+              "Payment-Flows"
+            ]
+          },
+          "etmita": {
+            "kind": "Wachstum",
+            "role": "Developer bei Etmita",
+            "place": "Vom mitarbeitenden Developer zum Leiten von Frontend-Arbeit",
+            "status": "Team",
+            "body": "Der Einstieg ins Etmita-Team hat mich stark weitergebracht. Ich bin als normaler Developer dazugekommen und durch echte Zusammenarbeit gewachsen: klarer ueber Strukturen denken, Frontend-Projekte leiten, Aufgaben fuer andere aufteilen, mit Backend und UI zusammenarbeiten und Ideen einbringen, die unsere Arbeit einfacher gemacht haben.",
+            "points": [
+              "Frontend-Leitung",
+              "Backend und UI Teamwork",
+              "Workflow-Ideen"
+            ]
+          }
+        }
       },
       "snapshot": {
         "eyebrow": "Snapshot",
@@ -92,6 +136,11 @@
         "kind": "TypeScript Package",
         "latest": "latest v{version}"
       },
+      "morePackages": {
+        "eyebrow": "Package Backlog",
+        "title": "Early Packages",
+        "body": "Kleinere Package-Experimente, die im Katalog sichtbar sind, aber bis zum naechsten API- und Docs-Pass bewusst weniger Fokus bekommen."
+      },
       "sections": {
         "packages": {
           "title": "Packages",
@@ -103,6 +152,11 @@
           "eyebrow": "Veröffentlichte Arbeit",
           "body": "Produktionsnahe Projekte für reale Workflows, Teams, Nutzer oder geschäftliche Anforderungen."
         },
+        "upcomingProjects": {
+          "title": "Coming Soon",
+          "eyebrow": "In Arbeit",
+          "body": "Projekte, die gerade im Hintergrund entstehen, mit sichtbaren Repositories oder Platzhaltern fuer den naechsten polierten Release."
+        },
         "personalProjects": {
           "title": "Persönliche Projekte",
           "eyebrow": "Experimente und Tools",
@@ -112,6 +166,8 @@
       "links": {
         "live": "Live",
         "github": "GitHub",
+        "frontend": "Frontend",
+        "backend": "Backend",
         "npm": "npm",
         "docs": "Docs"
       },
@@ -121,7 +177,17 @@
       }
     },
     "feedback": {
-      "title": "Feedback"
+      "title": "Feedback",
+      "eyebrow": "Was andere sagen",
+      "desc": "Eine kleine Sammlung von Stimmen von Menschen, mit denen ich gelernt, gebaut und geliefert habe.",
+      "snapshot": {
+        "eyebrow": "Feedback Snapshot",
+        "people": "Personen",
+        "words": "Woerter"
+      },
+      "people": {
+        "eyebrow": "Personen"
+      }
     }
   }
 }

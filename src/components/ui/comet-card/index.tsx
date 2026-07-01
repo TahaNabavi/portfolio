@@ -13,6 +13,9 @@ import { CometCardProps } from "./types";
 export const CometCard: React.FC<CometCardProps> = ({
   rotateDepth = 17.5,
   translateDepth = 20,
+  hoverScale = 1.05,
+  hoverZ = 50,
+  glareOpacity = 0.6,
   className,
   children,
 }) => {
@@ -90,8 +93,8 @@ export const CometCard: React.FC<CometCardProps> = ({
         }}
         initial={{ scale: 1, z: 0 }}
         whileHover={{
-          scale: 1.05,
-          z: 50,
+          scale: hoverScale,
+          z: hoverZ,
           transition: { duration: 0.2 },
         }}
         className="relative rounded-2xl"
@@ -101,7 +104,7 @@ export const CometCard: React.FC<CometCardProps> = ({
           className="pointer-events-none absolute inset-0 z-50 h-full w-full rounded-[16px] mix-blend-overlay"
           style={{
             background: glareBackground,
-            opacity: 0.6,
+            opacity: glareOpacity,
           }}
           transition={{ duration: 0.2 }}
         />
