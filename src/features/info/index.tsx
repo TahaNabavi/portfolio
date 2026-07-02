@@ -8,8 +8,15 @@ import { PATHS } from "@/routes/paths";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
-import { email, experienceKeys, funText, socialData, yearsExp } from "./constants";
+import { useLocale, useTranslations } from "next-intl";
+import {
+  email,
+  experienceKeys,
+  funText,
+  getResumePdfLink,
+  socialData,
+  yearsExp,
+} from "./constants";
 
 const buildKeys = ["packages", "dashboards", "motion"] as const;
 const styleKeys = ["systems", "typeSafety", "experience"] as const;
@@ -224,7 +231,9 @@ function PortraitCard() {
 export const InfoPage: React.FC = () => {
   useExpand(true);
   const t = useTranslations("pages.info");
+  const locale = useLocale();
   const navigate = useNavigation();
+  const resumePdfLink = getResumePdfLink(locale);
 
   return (
     <main className="relative h-full min-h-0 w-full self-stretch overflow-hidden">
@@ -269,6 +278,15 @@ export const InfoPage: React.FC = () => {
               >
                 <MugIcon fontSize={22} />
                 {t("btn.hire")}
+              </Link>
+              <Link
+                href={resumePdfLink}
+                target="_blank"
+                download
+                className="pointer inline-flex min-h-12 items-center gap-2 rounded-lg border border-primary-1/30 bg-primary-1/10 px-5 font-mono text-sm font-bold text-primary-1 transition hover:bg-primary-1 hover:text-black"
+              >
+                <LinkIcon className="size-5 shrink-0" />
+                Resume PDF
               </Link>
             </div>
           </motion.div>

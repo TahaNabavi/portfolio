@@ -78,11 +78,11 @@ function CodeBlock({ language, code }: { language: string; code: string }) {
 
   return (
     <div className="overflow-hidden rounded-lg border border-white/10 bg-[#101314] shadow-2xl shadow-black/20">
-      <div className="flex items-center justify-between border-b border-white/10 bg-white/[0.03] px-4 py-2 font-mono text-xs text-white/50">
+      <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-2 font-mono text-xs text-white/50">
         <span>{language}</span>
         <button
           onClick={copyHandler}
-          className="pointer rounded-md border border-white/10 px-2 py-1 text-white/70 transition hover:border-primary-1 hover:text-primary-1"
+          className="pointer shrink-0 rounded-md border border-white/10 px-2 py-1 text-white/70 transition hover:border-primary-1 hover:text-primary-1"
         >
           {copied ? "Copied" : "Copy"}
         </button>
@@ -120,8 +120,8 @@ function BlockRenderer({ block }: { block: DocBlock }) {
 
   if (block.type === "table") {
     return (
-      <div className="overflow-hidden rounded-lg border border-white/10">
-        <table className="w-full border-collapse text-left text-sm rtl:text-right">
+      <div className="overflow-x-auto rounded-lg border border-white/10">
+        <table className="min-w-[620px] w-full border-collapse text-left text-sm rtl:text-right">
           <thead className="bg-white/[0.04] text-white">
             <tr>
               {block.headers.map((header) => (
@@ -213,7 +213,7 @@ function PackageSelector({
             initial={{ scale: 0.96, y: 20 }}
             animate={{ scale: 1, y: 0 }}
             exit={{ scale: 0.96, y: 20 }}
-            className="w-full max-w-2xl rounded-xl border border-white/10 bg-[#141616] p-4 shadow-2xl"
+            className="max-h-[calc(100dvh-6rem)] w-full max-w-2xl overflow-y-auto rounded-xl border border-white/10 bg-[#141616] p-4 shadow-2xl"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between gap-4">
@@ -309,7 +309,7 @@ function Sidebar({
   }));
 
   return (
-    <aside className="min-h-0 lg:h-full lg:w-[300px]">
+    <aside className="min-h-0 w-full lg:h-full lg:w-[300px]">
       <div className="flex h-full min-h-0 flex-col overflow-hidden rounded-xl border border-white/10 bg-black/25 p-3 backdrop-blur">
         <button
           onClick={onOpenSelector}
@@ -322,7 +322,7 @@ function Sidebar({
           <div className="mt-1 text-xs text-white/45">Click to search and switch</div>
         </button>
 
-        <nav className="mt-5 grid min-h-0 flex-1 gap-5 overflow-y-auto pe-1 font-mono text-sm">
+        <nav className="mt-5 grid max-h-[42dvh] min-h-0 flex-1 gap-5 overflow-y-auto pe-1 font-mono text-sm lg:max-h-none">
           <div>
             <div className="mb-2 text-xs uppercase tracking-[0.18em] text-white/35">
               Latest v{doc.latestVersion}
@@ -392,12 +392,12 @@ function TourContent({
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -28 }}
         transition={{ duration: 0.28 }}
-        className="min-h-[520px] rounded-xl border border-white/10 bg-black/15 p-5 md:p-7"
+        className="min-h-[420px] rounded-xl border border-white/10 bg-black/15 p-4 sm:p-5 md:min-h-[520px] md:p-7"
       >
         <div className="font-mono text-xs uppercase tracking-[0.22em] text-primary-1">
           {page.groupLabel}
         </div>
-        <h2 className="mt-3 text-3xl md:text-5xl">{page.section.title}</h2>
+        <h2 className="mt-3 break-words text-3xl md:text-5xl">{page.section.title}</h2>
         <p className="mt-3 max-w-3xl font-mono text-sm leading-7 text-primary-1">
           {page.section.description}
         </p>
@@ -412,10 +412,10 @@ function TourContent({
           <button
             disabled={!previous}
             onClick={() => onSelectIndex(currentIndex - 1)}
-            className="pointer rounded-lg border border-white/10 px-4 py-3 text-left text-sm text-white/70 transition hover:border-primary-1 hover:text-primary-1 disabled:pointer-events-none disabled:opacity-30 rtl:text-right"
+            className="pointer min-w-0 rounded-lg border border-white/10 px-4 py-3 text-left text-sm text-white/70 transition hover:border-primary-1 hover:text-primary-1 disabled:pointer-events-none disabled:opacity-30 rtl:text-right sm:max-w-[45%]"
           >
             <span className="block font-mono text-xs text-white/35">Previous</span>
-            {previous?.section.title ?? "Start"}
+            <span className="block truncate">{previous?.section.title ?? "Start"}</span>
           </button>
           <div className="font-mono text-xs text-white/35">
             {currentIndex + 1} / {pages.length}
@@ -423,10 +423,10 @@ function TourContent({
           <button
             disabled={!next}
             onClick={() => onSelectIndex(currentIndex + 1)}
-            className="pointer rounded-lg border border-white/10 px-4 py-3 text-right text-sm text-white/70 transition hover:border-primary-1 hover:text-primary-1 disabled:pointer-events-none disabled:opacity-30 rtl:text-left"
+            className="pointer min-w-0 rounded-lg border border-white/10 px-4 py-3 text-right text-sm text-white/70 transition hover:border-primary-1 hover:text-primary-1 disabled:pointer-events-none disabled:opacity-30 rtl:text-left sm:max-w-[45%]"
           >
             <span className="block font-mono text-xs text-white/35">Next</span>
-            {next?.section.title ?? "End"}
+            <span className="block truncate">{next?.section.title ?? "End"}</span>
           </button>
         </div>
       </motion.section>
@@ -454,14 +454,14 @@ export function DocsPage({ packageSlug = "typefetch" }: { packageSlug?: string }
   const activePage = pages[currentIndex] ?? pages[0];
 
   return (
-    <main className="h-full min-h-0 w-full self-stretch overflow-hidden">
+    <main className="min-h-full w-full self-stretch overflow-y-auto lg:h-full lg:min-h-0 lg:overflow-hidden">
       <PackageSelector
         docs={docs}
         open={selectorOpen}
         onClose={() => setSelectorOpen(false)}
       />
 
-      <div className="mx-auto grid h-full min-h-0 w-full max-w-7xl items-start gap-8 px-4 py-8 pb-24 lg:grid-cols-[300px_minmax(0,1fr)]">
+      <div className="mx-auto grid min-h-full w-full max-w-7xl items-start gap-6 px-4 py-6 pb-24 sm:gap-8 sm:py-8 lg:h-full lg:min-h-0 lg:grid-cols-[300px_minmax(0,1fr)]">
         <Sidebar
           activeId={activePage.id}
           doc={doc}
@@ -470,7 +470,7 @@ export function DocsPage({ packageSlug = "typefetch" }: { packageSlug?: string }
           onSelect={setActiveId}
         />
 
-        <article className="h-full min-h-0 min-w-0 overflow-y-auto pe-1">
+        <article className="min-h-0 min-w-0 lg:h-full lg:overflow-y-auto lg:pe-1">
           <motion.header
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
@@ -480,7 +480,7 @@ export function DocsPage({ packageSlug = "typefetch" }: { packageSlug?: string }
             <div className="font-mono text-xs uppercase tracking-[0.22em] text-primary-1">
               Documentation
             </div>
-            <h1 className="mt-3 break-words text-4xl md:text-6xl">{doc.name}</h1>
+            <h1 className="mt-3 break-words text-3xl sm:text-4xl md:text-6xl">{doc.name}</h1>
             <p className="mt-4 max-w-3xl text-base leading-8 text-white/68">{doc.summary}</p>
 
             <div className="mt-6 flex flex-wrap gap-3">
@@ -490,17 +490,17 @@ export function DocsPage({ packageSlug = "typefetch" }: { packageSlug?: string }
               <Link
                 href={doc.github}
                 target="_blank"
-                className="pointer inline-flex items-center gap-2 rounded-md border border-white/10 px-3 py-2 text-sm text-white/75 transition hover:border-primary-1 hover:text-primary-1"
+                className="pointer inline-flex min-h-10 items-center gap-2 rounded-md border border-white/10 px-3 py-2 text-sm text-white/75 transition hover:border-primary-1 hover:text-primary-1"
               >
-                <LinkIcon className="size-4" />
+                <LinkIcon className="size-4 shrink-0" />
                 GitHub
               </Link>
               <Link
                 href={doc.npm}
                 target="_blank"
-                className="pointer inline-flex items-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-bold text-black transition hover:bg-primary-1"
+                className="pointer inline-flex min-h-10 items-center gap-2 rounded-md bg-white px-3 py-2 text-sm font-bold text-black transition hover:bg-primary-1"
               >
-                <LinkIcon className="size-4" />
+                <LinkIcon className="size-4 shrink-0" />
                 npm
               </Link>
             </div>

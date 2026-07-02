@@ -3,6 +3,19 @@ import { motion } from "framer-motion";
 export const funText = ["fun.text1", "fun.text2", "fun.text3", "fun.text4"];
 export const yearsExp = 5;
 export const experienceKeys = ["foundation", "practice", "etmita"] as const;
+
+export const RESUME_PDF_LINKS = {
+  en: "/resume-en.pdf",
+  ge: "/resume-ge.pdf",
+  fa: "/resume-fa.pdf",
+} as const;
+
+export const FALLBACK_RESUME_LOCALE = "en";
+
+export const getResumePdfLink = (locale: string) =>
+  RESUME_PDF_LINKS[locale as keyof typeof RESUME_PDF_LINKS] ||
+  RESUME_PDF_LINKS[FALLBACK_RESUME_LOCALE];
+
 export const socialData = [
   {
     icon: (
